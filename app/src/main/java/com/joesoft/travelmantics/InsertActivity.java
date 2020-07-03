@@ -26,8 +26,9 @@ import com.google.firebase.database.FirebaseDatabase;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_insert);
 
-        mFirebaseDatabase = FirebaseDatabase.getInstance();
-        mDatabaseReference = mFirebaseDatabase.getReference().child("traveldeals");
+        FirebaseUtil.openFirebaseReference("traveldeals");
+        mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
+        mDatabaseReference = FirebaseUtil.mDatabaseReference;
 
         mTextTitle = findViewById(R.id.text_title);
         mTextPrice = findViewById(R.id.text_price);
