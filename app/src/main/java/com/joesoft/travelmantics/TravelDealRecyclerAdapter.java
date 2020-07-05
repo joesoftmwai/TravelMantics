@@ -1,6 +1,7 @@
 package com.joesoft.travelmantics;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +29,7 @@ public class TravelDealRecyclerAdapter extends RecyclerView.Adapter<TravelDealRe
     private final ChildEventListener mChildEventListener;
 
     public TravelDealRecyclerAdapter() {
-        FirebaseUtil.openFirebaseReference("traveldeals");
+//        FirebaseUtil.openFirebaseReference("traveldeals");
         mFirebaseDatabase = FirebaseUtil.mFirebaseDatabase;
         mDatabaseReference = FirebaseUtil.mDatabaseReference;
         mDeals = FirebaseUtil.mDeals;
@@ -39,6 +40,7 @@ public class TravelDealRecyclerAdapter extends RecyclerView.Adapter<TravelDealRe
                 td.setId(snapshot.getKey());
                 Log.d(TAG, "onChildAdded: " +  td.getTitle());
                 mDeals.add(td);
+                notifyItemInserted(mDeals.size()-1);
             }
 
             @Override
@@ -68,26 +70,46 @@ public class TravelDealRecyclerAdapter extends RecyclerView.Adapter<TravelDealRe
     @Override
     public TravelDealRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
-//        View viewItem = LayoutInflater.from(context)
-//                .inflate(R.layout.item_deal)
-        return null;
+        View itemView = LayoutInflater.from(context)
+                .inflate(R.layout.item_deal, parent, false);
+
+        return new ViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull TravelDealRecyclerAdapter.ViewHolder holder, int position) {
-
+        TravelDeal deal = mDeals.get(position);
+        holder.mTextTitle.setText(deal.getTitle());
+        holder.mTextDescription.setText(deal.getDescription());
+        holder.mTextPrice.setText(deal.getPrice());
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mDeals.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView mTextTitle;
+        TextView mTextDescription;
+        TextView mTextPrice;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTextTitle = itemView.findViewById(R.id.text_item_title);
+            mTextDescription = itemView.findViewById(R.id.text_item_description);
+            mTextPrice = itemView.findViewById(R.id.text_item_price);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            Log.d(TAG, "onClick: position = " + position);
+            TravelDeal dealPosition = mDeals.get(position);
+            Intent intent = new Intent(v.getContext(), TravelDealActivity.class);
+            intent.putExtra(TravelDealActivity.DEAL_POSITION, dealPosition);
+            v.getContext().startActivity(intent);
         }
     }
 }

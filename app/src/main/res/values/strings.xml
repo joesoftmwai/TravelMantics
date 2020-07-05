@@ -4,4 +4,6 @@
     <string name="price_hint">Price (numbers only)</string>
     <string name="description_hint">Description</string>
     <string name="save_action">Save</string>
+    <string name="delete_action">Delete</string>
+    <string name="logout_action">Logout</string>
 </resources>

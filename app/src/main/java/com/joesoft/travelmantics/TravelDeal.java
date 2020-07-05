@@ -1,6 +1,9 @@
 package com.joesoft.travelmantics;
 
-public class TravelDeal {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class TravelDeal implements Parcelable {
     private String id;
     private String title;
     private String price;
@@ -17,6 +20,26 @@ public class TravelDeal {
         this.description = description;
         this.imageUrl = imageUrl;
     }
+
+    protected TravelDeal(Parcel in) {
+        id = in.readString();
+        title = in.readString();
+        price = in.readString();
+        description = in.readString();
+        imageUrl = in.readString();
+    }
+
+    public static final Creator<TravelDeal> CREATOR = new Creator<TravelDeal>() {
+        @Override
+        public TravelDeal createFromParcel(Parcel in) {
+            return new TravelDeal(in);
+        }
+
+        @Override
+        public TravelDeal[] newArray(int size) {
+            return new TravelDeal[size];
+        }
+    };
 
     public String getId() {
         return id;
@@ -56,5 +79,19 @@ public class TravelDeal {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(title);
+        dest.writeString(price);
+        dest.writeString(description);
+        dest.writeString(imageUrl);
     }
 }
