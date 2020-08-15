@@ -9,16 +9,18 @@ public class TravelDeal implements Parcelable {
     private String price;
     private String description;
     private String imageUrl;
+    private String imageName;
 
     public TravelDeal() {
     }
 
-    public TravelDeal(String title, String price, String description, String imageUrl) {
+    public TravelDeal(String title, String price, String description, String imageUrl, String imageName) {
         this.id = id;
         this.title = title;
         this.price = price;
         this.description = description;
         this.imageUrl = imageUrl;
+        this.imageName = imageName;
     }
 
     protected TravelDeal(Parcel in) {
@@ -27,6 +29,7 @@ public class TravelDeal implements Parcelable {
         price = in.readString();
         description = in.readString();
         imageUrl = in.readString();
+        imageName = in.readString();
     }
 
     public static final Creator<TravelDeal> CREATOR = new Creator<TravelDeal>() {
@@ -81,6 +84,14 @@ public class TravelDeal implements Parcelable {
         this.imageUrl = imageUrl;
     }
 
+    public String getImageName() {
+        return imageName;
+    }
+
+    public void setImageName(String imageName) {
+        this.imageName = imageName;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -93,5 +104,6 @@ public class TravelDeal implements Parcelable {
         dest.writeString(price);
         dest.writeString(description);
         dest.writeString(imageUrl);
+        dest.writeString(imageName);
     }
 }

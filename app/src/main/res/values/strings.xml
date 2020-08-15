@@ -6,4 +6,5 @@
     <string name="save_action">Save</string>
     <string name="delete_action">Delete</string>
     <string name="logout_action">Logout</string>
+    <string name="new_deal_action">New deal</string>
 </resources>

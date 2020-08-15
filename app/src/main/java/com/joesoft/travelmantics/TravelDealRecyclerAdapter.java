@@ -2,10 +2,12 @@ package com.joesoft.travelmantics;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -82,6 +85,7 @@ public class TravelDealRecyclerAdapter extends RecyclerView.Adapter<TravelDealRe
         holder.mTextTitle.setText(deal.getTitle());
         holder.mTextDescription.setText(deal.getDescription());
         holder.mTextPrice.setText(deal.getPrice());
+        holder.showImage(deal.getImageUrl());
     }
 
     @Override
@@ -93,12 +97,14 @@ public class TravelDealRecyclerAdapter extends RecyclerView.Adapter<TravelDealRe
         TextView mTextTitle;
         TextView mTextDescription;
         TextView mTextPrice;
+        ImageView mImageDeal;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             mTextTitle = itemView.findViewById(R.id.text_item_title);
             mTextDescription = itemView.findViewById(R.id.text_item_description);
             mTextPrice = itemView.findViewById(R.id.text_item_price);
+            mImageDeal = itemView.findViewById(R.id.image_item_deal);
             itemView.setOnClickListener(this);
         }
 
@@ -110,6 +116,17 @@ public class TravelDealRecyclerAdapter extends RecyclerView.Adapter<TravelDealRe
             Intent intent = new Intent(v.getContext(), TravelDealActivity.class);
             intent.putExtra(TravelDealActivity.DEAL_POSITION, dealPosition);
             v.getContext().startActivity(intent);
+        }
+
+        private void showImage(String url) {
+            if (url != null && url.isEmpty() == false) {
+                Picasso.get()
+                        .load(url)
+                        .resize(140, 140)
+                        .centerCrop()
+                        .into(mImageDeal);
+            }
+
         }
     }
 }

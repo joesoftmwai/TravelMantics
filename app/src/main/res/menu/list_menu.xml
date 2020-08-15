@@ -6,4 +6,9 @@
         android:id="@+id/action_logout"
         android:title="@string/logout_action"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_new_deal"
+        android:icon="@drawable/ic_library_add_white_24dp"
+        android:title="@string/new_deal_action"
+        app:showAsAction="ifRoom|withText" />
 </menu>

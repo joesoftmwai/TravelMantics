@@ -74,14 +74,17 @@ public class ListActivity extends AppCompatActivity {
 //            }
 //        };
 //        mDatabaseReference.addChildEventListener(mChildEventListener);
+
+        FirebaseUtil.openFirebaseReference("traveldeals", this);
+
         FloatingActionButton fab = findViewById(R.id.fab);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), TravelDealActivity.class));
             }
         });
-
 
 
 
@@ -92,6 +95,7 @@ public class ListActivity extends AppCompatActivity {
         super.onResume();
 
         FirebaseUtil.openFirebaseReference("traveldeals", this);
+
         mRecyclerDeals = findViewById(R.id.recycler_deals);
         mDealsLayoutManager = new LinearLayoutManager(this);
         mRecyclerDeals.setLayoutManager(mDealsLayoutManager);
@@ -100,7 +104,10 @@ public class ListActivity extends AppCompatActivity {
         mRecyclerDeals.setAdapter(mDealRecyclerAdapter);
 
         FirebaseUtil.attachListener();
+
+
     }
+
 
     @Override
     protected void onPause() {
@@ -112,6 +119,13 @@ public class ListActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.list_menu, menu);
+        MenuItem newDeal = menu.findItem(R.id.action_new_deal);
+        if (FirebaseUtil.mIsAdmin == true) {
+            newDeal.setVisible(true);
+        }
+        else {
+            newDeal.setVisible(false);
+        }
         return true;
     }
 
@@ -130,7 +144,14 @@ public class ListActivity extends AppCompatActivity {
                     });
             FirebaseUtil.detachListener();
             return true;
+        } else if (id == R.id.action_new_deal){
+            startActivity(new Intent(getApplicationContext(), TravelDealActivity.class));
+            return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void showMenu() {
+        invalidateOptionsMenu();
     }
 }
